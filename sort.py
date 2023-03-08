@@ -1,16 +1,11 @@
-"""def insert_sort(A):
-    сортировка списка А вставками
+def insert_sort(A):
+    """сортировка списка А вставками"""
     N = len(A)
     for top in range(1, N):
         k = top
-        print(k, "до цикла while (берем top за шкирку)")
-        print(A)
         while k > 0 and A[k - 1] > A[k]:
-            print(k, "до сдвига")
             A[k], A[k - 1] = A[k - 1], A[k]
             k -= 1
-            print(k, "после сдвига")
-            print(A)"""
 
 
 def choise_sort(A):
