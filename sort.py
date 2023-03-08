@@ -19,7 +19,10 @@ def choise_sort(A):
 
 def bubble_sort(A):
     """сортировка списка А методом пузырька"""
-    pass
+    for bypass in range(1,N):
+        for k in range(0, bypass):
+            if A[k] > A[k+1]:
+                A[k], A[k+1] = A[k+1], A[k]
 
 
 def test_sort(sort_algorithm):
