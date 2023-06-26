@@ -26,6 +26,20 @@ def bubble_sort(A):
                 A[k], A[k+1] = A[k+1], A[k]
 
 
+def count_sort(N):
+    """сортировка списка А подсчетом"""
+    F = [0] * 10
+    A = []
+    for i in range(N):
+        x = int(input())
+        F[x] += 1
+    for t in range(10):
+         A += [t] * F[t]
+    print(*F)
+    return A
+print(count_sort(9))
+
+
 def test_sort(sort_algorithm):
     print("Тестируем: ", sort_algorithm.__doc__)
     print("testcase #1: ")
@@ -51,3 +65,4 @@ if __name__ == "__main__":
     test_sort(insert_sort)
     test_sort(choise_sort)
     test_sort(bubble_sort)
+    test_sort(count_sort)
