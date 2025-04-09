@@ -20,7 +20,7 @@ def display_word():
         if char in st.session_state.guessed_letters:
             displayed_word += letter  # Показываем угаданную букву
         else:
-            displayed_word += '_'  # Показываем подчеркивание для неугаданных букв
+            displayed_word += '-'  # Показываем тире для неугаданных букв
     return displayed_word
 
 # Функция для отображения угаданных букв
