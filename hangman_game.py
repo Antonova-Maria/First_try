@@ -14,6 +14,9 @@ def initialize():
     
     if 'input_text_key' not in st.session_state:
         st.session_state.input_text_key = str(uuid.uuid4())
+        
+    if 'message' not in st.session_state:
+        st.session_state.message = None
 
 # Функция для начала новой игры
 def play_again():
@@ -21,10 +24,12 @@ def play_again():
     st.session_state.guessed_letters = []
     st.session_state.remaining_attempts = 6
     st.session_state.input_text_key = str(uuid.uuid4())  # Обновляем ключ поля ввода
+    st.session_state.message = None
 
 # Функция для очистки поля ввода
 def clear_field():
     st.session_state.input_text_key = str(uuid.uuid4())
+    st.rerun()  # Перезапускаем приложение для обновления UI
 
 # Функция для отображения текущего состояния слова
 def display_word():
@@ -47,6 +52,7 @@ initialize()
 st.title("Игра Виселица")
 st.write("Угадайте загаданное слово, вводя по одной букве.")
 
+
 # Отображение текущего состояния игры
 st.write("Слово:", display_word())
 st.write(f"Осталось попыток: {st.session_state.remaining_attempts}")
@@ -56,7 +62,7 @@ st.write(f"Угаданные буквы: {display_guessed_letters()}")
 game_over = False
 
 if set(st.session_state.word).issubset(set(st.session_state.guessed_letters)):
-    st.success(f"Поздравляем! Вы угадали слово: {st.session_state.word}")
+    st.success(f"Поздравляем! Вы угадали слово: {st.session_state.word}. Как же трудно было сделать эту игру :)")
     game_over = True
     st.button("Играть снова", on_click=play_again)
 
@@ -71,25 +77,36 @@ if not game_over:
 
     if letter:
         if len(letter) != 1:
-            st.warning("Пожалуйста, введите только одну букву!")
+            st.session_state.message = {"type": "warning", "text": "Пожалуйста, введите только одну букву!"}
             clear_field()
             
         elif not letter.isalpha():
-            st.warning("Пожалуйста, введите букву!")
+            st.session_state.message = {"type": "warning", "text": "Пожалуйста, введите букву!"}
             clear_field()
             
         elif letter in st.session_state.guessed_letters:
-            st.warning("Вы уже угадали эту букву!")
+            st.session_state.message = {"type": "warning", "text": "Вы уже угадали эту букву!"}
             clear_field()
             
         elif letter in st.session_state.word:
             st.session_state.guessed_letters.append(letter)
-            st.success("Правильно!")
+            st.session_state.message = {"type": "success", "text": "Правильно!"}
             clear_field()
             
         else:
             st.session_state.guessed_letters.append(letter)
             st.session_state.remaining_attempts -= 1
-            st.error("Неправильно!")
+            st.session_state.message = {"type": "error", "text": "Неправильно!"}
             clear_field()
-            
+
+# Отображение сообщений из session_state
+if not game_over:
+    if st.session_state.message:
+        if st.session_state.message["type"] == "warning":
+            st.warning(st.session_state.message["text"])
+        elif st.session_state.message["type"] == "error":
+            st.error(st.session_state.message["text"])
+        elif st.session_state.message["type"] == "success":
+            st.success(st.session_state.message["text"])
+        # Очищаем сообщение после отображения, чтобы оно не появлялось снова
+        st.session_state.message = None
