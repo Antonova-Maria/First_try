@@ -73,33 +73,23 @@ if not game_over:
         if len(letter) != 1:
             st.warning("Пожалуйста, введите только одну букву!")
             clear_field()
-            st.rerun()
+            
         elif not letter.isalpha():
             st.warning("Пожалуйста, введите букву!")
             clear_field()
-            st.rerun()
+            
         elif letter in st.session_state.guessed_letters:
             st.warning("Вы уже угадали эту букву!")
             clear_field()
-            st.rerun()
+            
         elif letter in st.session_state.word:
             st.session_state.guessed_letters.append(letter)
             st.success("Правильно!")
             clear_field()
-            st.rerun()
+            
         else:
             st.session_state.guessed_letters.append(letter)
             st.session_state.remaining_attempts -= 1
             st.error("Неправильно!")
             clear_field()
-            st.rerun()
-""" st.fragment
-def input_field():
-    user_input = st.text_input("Введите текст")
-    if user_input:
-        st.write(f"Вы ввели: {user_input}")
-        # Очистить поле ввода и перезапустить только этот фрагмент
-        st.rerun(scope="fragment")
-
-# Вызов фрагмента
-input_field() """
+            
